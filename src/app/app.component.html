@@ -1,0 +1,17 @@
+<h1>Оплата услуг мобильной связи</h1>
+<div class="providerList">
+  <mat-card class="providerItem"
+            *ngFor="let item of providers"
+            [routerLink]="['payment', item.name]">
+    <mat-card-title> {{ item.name }} </mat-card-title>
+    <mat-card-subtitle>
+       <span *ngFor="let code of item.prefix; let end = last">
+      {{code}}<span *ngIf="!end">, </span>
+    </span>
+    </mat-card-subtitle>
+  </mat-card>
+</div>
+<div class="view-side-form">
+  <router-outlet></router-outlet>
+</div>
+

@@ -1,0 +1,50 @@
+<div class="side-form">
+  <mat-card class="card">
+    <mat-card-title>{{title}}</mat-card-title>
+    <div class="httpError" [class.httpError__view]="resError">
+      Что-то пошло не так. Попробуйте еще раз или заберите деньги...
+    </div>
+    <mat-card-content class="content" [ngClass]="{'content__complete': resComplete, 'content__loading': request}">
+      <form [formGroup]="paymentForm" class="content">
+        <mat-form-field class="content-item" >
+          <input matInput
+                 placeholder="Номер телефона"
+                 [textMask]="{ mask: phoneMask }"
+                 (onChange)="change($event)"
+                 formControlName="phone"
+                 type="text"/>
+          <span matPrefix>+7&nbsp;</span>
+          <mat-error *ngIf="paymentForm.controls.phone.errors"> Не заполнено </mat-error>
+        </mat-form-field>
+        <mat-form-field class="content-item">
+          <input  matInput
+                  placeholder="Cумма"
+                  formControlName="cash"
+                  type="text"/>
+          <span matSuffix>₽</span>
+          <mat-hint> от 1 до 1000</mat-hint>
+          <mat-error *ngIf="paymentForm.controls.cash.errors?.required"> Не заполнено</mat-error>
+          <mat-error *ngIf="paymentForm.controls.cash.errors?.pattern"> Только число от 1 до 1000</mat-error>
+          <mat-error *ngIf="paymentForm.controls.cash.errors?.max"> Не более 1000</mat-error>
+        </mat-form-field>
+      </form>
+      <mat-spinner class="spinner"></mat-spinner>
+      <div class="content complete">
+        <mat-icon class="complete-icon">done</mat-icon>
+        <p class="complete-text">Удачи! Через 2 секунды окно закроется</p>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="footer"
+                      [class.footer__hide]="resComplete || request">
+      <button mat-raised-button
+              routerLink="">
+        Отменить
+      </button>
+      <button mat-raised-button
+              color="primary"
+              (click)="sendPayment()">
+        Оплатить
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
